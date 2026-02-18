@@ -33,7 +33,8 @@
 			"dist/credentials/NewRelicApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/NewRelic/NewRelic.node.js"
+			"dist/nodes/NewRelic/NewRelic.node.js",
+			"dist/nodes/NewRelic/NewRelicTrigger.node.js"
 		]
 	},
 	"devDependencies": {
