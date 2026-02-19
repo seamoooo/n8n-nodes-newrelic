@@ -62,6 +62,20 @@ export class NewRelic implements INodeType {
                 default: 'query',
             },
             {
+                displayName: 'Account ID',
+                name: 'accountId',
+                type: 'number',
+                default: 0,
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['nrql'],
+                        operation: ['query'],
+                    },
+                },
+                description: 'The New Relic Account ID to execute the query against',
+            },
+            {
                 displayName: 'Query',
                 name: 'query',
                 type: 'string',
@@ -94,13 +108,16 @@ export class NewRelic implements INodeType {
             try {
                 if (resource === 'nrql' && operation === 'query') {
                     const query = this.getNodeParameter('query', i) as string;
+                    const accountId = this.getNodeParameter('accountId', i) as number;
 
                     const graphqlQuery = {
                         query: `
 							{
 								actor {
-									nrql(query: "${query.replace(/"/g, '\\"')}", timeout: 5) {
-										results
+									account(id: ${accountId}) {
+										nrql(query: "${query.replace(/"/g, '\\"')}", timeout: 5) {
+											results
+										}
 									}
 								}
 							}
@@ -117,7 +134,8 @@ export class NewRelic implements INodeType {
                         },
                     });
 
-                    const nrqlResults = response?.data?.actor?.nrql?.results;
+                    // Update path to results based on new query structure
+                    const nrqlResults = response?.data?.actor?.account?.nrql?.results;
 
                     if (Array.isArray(nrqlResults)) {
                         nrqlResults.forEach((result) => {
@@ -126,6 +144,10 @@ export class NewRelic implements INodeType {
                             });
                         });
                     } else {
+                        // Handle potential errors or empty results in a cleaner way
+                        if (response?.errors) {
+                            throw new Error(response.errors.map((e: any) => e.message).join(', '));
+                        }
                         returnData.push({
                             json: response,
                         });
