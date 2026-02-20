@@ -10,7 +10,10 @@ export class NewRelic implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'New Relic',
         name: 'newRelic',
-        icon: 'file:newrelic.svg',
+        icon: {
+            light: 'file:../../icons/newrelic.svg',
+            dark: 'file:../../icons/newrelic.dark.svg'
+        },
         group: ['transform'],
         version: 1,
         subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
@@ -64,8 +67,8 @@ export class NewRelic implements INodeType {
             {
                 displayName: 'Account ID',
                 name: 'accountId',
-                type: 'number',
-                default: 0,
+                type: 'string',
+                default: '',
                 required: true,
                 displayOptions: {
                     show: {
@@ -73,7 +76,7 @@ export class NewRelic implements INodeType {
                         operation: ['query'],
                     },
                 },
-                description: 'The New Relic Account ID to execute the query against',
+                description: 'The New Relic Account ID to query against',
             },
             {
                 displayName: 'Query',
@@ -108,7 +111,7 @@ export class NewRelic implements INodeType {
             try {
                 if (resource === 'nrql' && operation === 'query') {
                     const query = this.getNodeParameter('query', i) as string;
-                    const accountId = this.getNodeParameter('accountId', i) as number;
+                    const accountId = this.getNodeParameter('accountId', i) as string;
 
                     const graphqlQuery = {
                         query: `
@@ -134,7 +137,6 @@ export class NewRelic implements INodeType {
                         },
                     });
 
-                    // Update path to results based on new query structure
                     const nrqlResults = response?.data?.actor?.account?.nrql?.results;
 
                     if (Array.isArray(nrqlResults)) {
@@ -144,10 +146,6 @@ export class NewRelic implements INodeType {
                             });
                         });
                     } else {
-                        // Handle potential errors or empty results in a cleaner way
-                        if (response?.errors) {
-                            throw new Error(response.errors.map((e: any) => e.message).join(', '));
-                        }
                         returnData.push({
                             json: response,
                         });

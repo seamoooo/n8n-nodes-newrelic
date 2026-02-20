@@ -9,7 +9,10 @@ export class NewRelicApi implements ICredentialType {
     name = 'newRelicApi';
     displayName = 'New Relic API';
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    icon = 'file:newrelic.svg' as any;
+    icon = {
+        light: 'file:../icons/newrelic.svg',
+        dark: 'file:../icons/newrelic.dark.svg'
+    } as any;
     documentationUrl = 'https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/#user-api-key';
     properties: INodeProperties[] = [
         {

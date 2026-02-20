@@ -9,7 +9,10 @@ export class NewRelicTrigger implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'New Relic Trigger',
         name: 'newRelicTrigger',
-        icon: 'file:newrelic.svg',
+        icon: {
+            light: 'file:../../icons/newrelic.svg',
+            dark: 'file:../../icons/newrelic.dark.svg'
+        },
         group: ['trigger'],
         version: 1,
         description: 'Handle New Relic webhook events',
@@ -18,7 +21,12 @@ export class NewRelicTrigger implements INodeType {
         },
         inputs: [],
         outputs: ['main'],
-        credentials: [],
+        credentials: [
+            {
+                name: 'newRelicSecret',
+                required: true,
+            },
+        ],
         webhooks: [
             {
                 name: 'default',
@@ -27,21 +35,13 @@ export class NewRelicTrigger implements INodeType {
                 path: 'webhook',
             },
         ],
-        properties: [
-            {
-                displayName: 'Secret Token',
-                name: 'secretToken',
-                type: 'string',
-                default: '',
-                placeholder: 'my-secret-token',
-                description: 'The secret token (X-Secret-Token) to verify the request source',
-            },
-        ],
+        properties: [],
     };
 
     async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
         const req = this.getRequestObject();
-        const secretToken = this.getNodeParameter('secretToken') as string;
+        const credentials = await this.getCredentials('newRelicSecret');
+        const secretToken = credentials.secretToken as string;
 
         // Signature Verification
         if (secretToken) {
