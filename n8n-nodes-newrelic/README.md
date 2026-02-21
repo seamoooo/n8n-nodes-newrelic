@@ -1,5 +1,6 @@
 # n8n-nodes-newrelic
 
+![n8n nodes newrelic](images/icons.png)
 This is an n8n community node. It lets you use New Relic in your n8n workflows.
 
 n8n is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
