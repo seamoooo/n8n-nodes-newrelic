@@ -31,7 +31,7 @@
 		"n8nNodesApiVersion": 1,
 		"credentials": [
 			"dist/credentials/NewRelicApi.credentials.js",
-			"dist/credentials/NewRelicSecret.credentials.js"
+			"dist/credentials/NewRelicSecretApi.credentials.js"
 		],
 		"nodes": [
 			"dist/nodes/NewRelic/NewRelic.node.js",

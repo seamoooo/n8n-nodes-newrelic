@@ -1,4 +1,5 @@
 import {
+    IDataObject,
     IExecuteFunctions,
     INodeExecutionData,
     INodeType,
@@ -255,7 +256,7 @@ export class NewRelic implements INodeType {
                         operation: ['query'],
                     },
                 },
-                description: 'The NRQL to execute. <a href="https://docs.newrelic.com/jp/docs/nrql/nrql-syntax-clauses-functions/" target="_blank">NRQL Syntax</a>',
+                description: 'The NRQL to execute. <a href="https://docs.newrelic.com/jp/docs/nrql/nrql-syntax-clauses-functions/" target="_blank">NRQL Syntax</a>.',
             },
             {
                 displayName: 'Search Query',
@@ -283,7 +284,7 @@ export class NewRelic implements INodeType {
                         operation: ['relationships', 'tags'],
                     },
                 },
-                description: 'The GUID of the New Relic entity. <a href="https://docs.newrelic.com/docs/apis/nerdgraph/examples/nerdgraph-entities-api-tutorial/" target="_blank">How to find this</a>',
+                description: 'The GUID of the New Relic entity. <a href="https://docs.newrelic.com/docs/apis/nerdgraph/examples/nerdgraph-entities-api-tutorial/" target="_blank">How to find this</a>.',
             },
         ],
     };
@@ -302,7 +303,7 @@ export class NewRelic implements INodeType {
 
         for (let i = 0; i < items.length; i++) {
             try {
-                let graphqlQuery: any = {};
+                let graphqlQuery: IDataObject = {};
 
                 if (resource === 'nrql' && operation === 'query') {
                     const query = this.getNodeParameter('query', i) as string;
@@ -392,7 +393,7 @@ export class NewRelic implements INodeType {
                         if (operation === 'consumption') {
                             const results = response?.data?.actor?.account?.nrql?.results;
                             if (Array.isArray(results)) {
-                                results.forEach((r: any) => returnData.push({ json: r }));
+                                results.forEach((r: IDataObject) => returnData.push({ json: r }));
                             } else {
                                 returnData.push({ json: response });
                             }
@@ -403,7 +404,7 @@ export class NewRelic implements INodeType {
                         if (operation === 'search') {
                             const entities = response?.data?.actor?.entitySearch?.results?.entities;
                             if (Array.isArray(entities)) {
-                                entities.forEach((entity: any) => returnData.push({ json: entity }));
+                                entities.forEach((entity: IDataObject) => returnData.push({ json: entity }));
                             } else {
                                 returnData.push({ json: response });
                             }
@@ -414,7 +415,7 @@ export class NewRelic implements INodeType {
                         if (operation === 'getAuthDomains') {
                             const domains = response?.data?.actor?.organization?.userManagement?.authenticationDomains?.authenticationDomains;
                             if (Array.isArray(domains)) {
-                                domains.forEach((d: any) => returnData.push({ json: d }));
+                                domains.forEach((d: IDataObject) => returnData.push({ json: d }));
                             } else {
                                 returnData.push({ json: response });
                             }

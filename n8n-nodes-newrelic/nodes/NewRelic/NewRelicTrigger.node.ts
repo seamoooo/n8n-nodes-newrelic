@@ -23,7 +23,7 @@ export class NewRelicTrigger implements INodeType {
         outputs: ['main'],
         credentials: [
             {
-                name: 'newRelicSecret',
+                name: 'newRelicSecretApi',
                 required: true,
             },
         ],
@@ -36,6 +36,7 @@ export class NewRelicTrigger implements INodeType {
             },
         ],
         properties: [],
+		usableAsTool: true,
     };
 
     async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {

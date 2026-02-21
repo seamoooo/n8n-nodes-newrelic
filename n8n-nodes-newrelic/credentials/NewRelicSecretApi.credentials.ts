@@ -1,16 +1,23 @@
 import {
+    ICredentialTestRequest,
     ICredentialType,
     INodeProperties,
 } from 'n8n-workflow';
 
-export class NewRelicSecret implements ICredentialType {
-    name = 'newRelicSecret';
-    displayName = 'New Relic Secret';
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class NewRelicSecretApi implements ICredentialType {
+    name = 'newRelicSecretApi';
+    displayName = 'New Relic Secret API';
+
     icon = {
         light: 'file:../icons/newrelic.svg',
         dark: 'file:../icons/newrelic.dark.svg'
-    } as any;
+    } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    test: ICredentialTestRequest = {
+        request: {
+            baseURL: 'https://api.newrelic.com',
+            url: '/',
+        },
+    };
     documentationUrl = 'https://docs.newrelic.com/';
     properties: INodeProperties[] = [
         {
