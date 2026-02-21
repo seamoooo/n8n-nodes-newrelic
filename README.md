@@ -45,6 +45,7 @@ To use this node, you need to set up credentials:
 2.  **Region**: Select your New Relic data region:
     *   **US** (United States)
     *   **EU** (Europe)
+3.  **New Relic Secret** (for Trigger): Create a new credential and enter your **Secret Token** to verify webhook signatures.
 
 ## Usage
 

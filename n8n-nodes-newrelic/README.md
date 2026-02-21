@@ -30,6 +30,20 @@ If you want to install this node locally for development:
 
 ## Operations
 
+### Account
+*   **Get Consumption**: Retrieve usage data (e.g., GB consumed per metric type).
+*   **Get Account Structure**: Retrieve the parent-child account hierarchy.
+
+### Entity
+*   **Search Catalog**: Search the New Relic entity catalog (e.g., by domain, name, or tags).
+*   **Get Relationships**: Retrieve related entities (dependencies) for a specific entity.
+*   **Get Tags**: Retrieve tags assigned to a specific entity.
+*   **Get Golden Metrics**: Retrieve golden metrics for a specific entity.
+
+### User Management
+*   **Get Authentication Domains**: Retrieve the IDs and details of authentication domains in the organization.
+*   **Create User**: Create a new user in a specific authentication domain (Basic, Core, or Full). Note: Not recommended for domains using SCIM provisioning.
+
 ### NRQL Execution
 *   **Query**: Execute a NRQL (New Relic Query Language) query via NerdGraph.
 
@@ -45,13 +59,20 @@ To use this node, you need to set up credentials:
 2.  **Region**: Select your New Relic data region:
     *   **US** (United States)
     *   **EU** (Europe)
+3.  **New Relic Secret** (for Trigger): Create a new credential and enter your **Secret Token** to verify webhook signatures.
 
 ## Usage
 
-### Execute NRQL Query
+### Automating Incident Enrichment (Example)
+1.  Add the **New Relic Trigger** node to receive webhook alerts.
+2.  Add the **New Relic** node to your workflow.
+3.  Select **Entity** as the Resource and **Search Catalog** or **Get Relationships** to gather context about the failing service.
+4.  Chain this data to a Jira or Slack node to automate ticket creation with enriched context.
+
+### Execute NRQL
 1.  Add the **New Relic** node to your workflow.
-2.  Select **NRQL** as the Resource and **Query** as the Operation.
-3.  Enter your NRQL query in the **Query** field.
+2.  Select **NRQL** as the Resource and **Execute** as the Operation.
+3.  Enter your NRQL command in the **NRQL** field.
     *   Example: `SELECT count(*) FROM Transaction`
 4.  Execute the node. The result will return the raw data from NerdGraph.
 

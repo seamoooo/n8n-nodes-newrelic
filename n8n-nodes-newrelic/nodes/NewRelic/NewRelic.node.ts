@@ -218,7 +218,7 @@ export class NewRelic implements INodeType {
                 description: 'The type/license tier for the new user',
             },
             {
-                displayName: 'SCIM Warning',
+                displayName: 'Note: If the target Authentication Domain uses SCIM for automated provisioning (e.g. via Okta/Azure AD), you should NOT create users via this API. Please manage users directly in your Identity Provider.',
                 name: 'scimNotice',
                 type: 'notice',
                 displayOptions: {
@@ -227,7 +227,8 @@ export class NewRelic implements INodeType {
                         operation: ['createUser'],
                     },
                 },
-                default: '<strong>Note:</strong> If the target Authentication Domain uses SCIM for automated provisioning (e.g. via Okta/Azure AD), you should <strong>NOT</strong> create users via this API. Please manage users directly in your Identity Provider. <a href="https://docs.newrelic.com/docs/accounts/accounts/automated-user-management/scim-support-automated-user-management/" target="_blank">SCIM / Automated User Management Docs</a>',
+                default: '',
+                description: 'More info: https://docs.newrelic.com/docs/accounts/accounts/automated-user-management/scim-support-automated-user-management/',
             },
             {
                 displayName: 'Account ID',
