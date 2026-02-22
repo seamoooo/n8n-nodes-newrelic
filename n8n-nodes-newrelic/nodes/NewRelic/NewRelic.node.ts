@@ -365,7 +365,7 @@ export class NewRelic implements INodeType {
                         const email = this.getNodeParameter('email', i) as string;
                         const userType = this.getNodeParameter('userType', i) as string;
                         graphqlQuery = {
-                            query: `mutation { userManagementCreateUser(manageUserOptions: { authenticationDomainId: "${authDomainId.replace(/"/g, '\\"')}", email: "${email.replace(/"/g, '\\"')}", userType: ${userType} }) { createdUser { id email } } }`
+                            query: `mutation { userManagementCreateUser(createUserOptions: { authenticationDomainId: "${authDomainId.replace(/"/g, '\\"')}", email: "${email.replace(/"/g, '\\"')}", userType: ${userType} }) { createdUser { id email } } }`
                         };
                     }
                 }
