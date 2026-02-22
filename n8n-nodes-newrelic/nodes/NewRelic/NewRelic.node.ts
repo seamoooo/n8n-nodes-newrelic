@@ -191,6 +191,21 @@ export class NewRelic implements INodeType {
                 description: 'The email address of the new user',
             },
             {
+                displayName: 'Name',
+                name: 'name',
+                type: 'string',
+                placeholder: 'Jane Doe',
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['userManagement'],
+                        operation: ['createUser'],
+                    },
+                },
+                description: 'The full name of the new user',
+            },
+            {
                 displayName: 'User Type',
                 name: 'userType',
                 type: 'options',
@@ -363,9 +378,10 @@ export class NewRelic implements INodeType {
                     } else if (operation === 'createUser') {
                         const authDomainId = this.getNodeParameter('authDomainId', i) as string;
                         const email = this.getNodeParameter('email', i) as string;
+                        const name = this.getNodeParameter('name', i) as string;
                         const userType = this.getNodeParameter('userType', i) as string;
                         graphqlQuery = {
-                            query: `mutation { userManagementCreateUser(createUserOptions: { authenticationDomainId: "${authDomainId.replace(/"/g, '\\"')}", email: "${email.replace(/"/g, '\\"')}", userType: ${userType} }) { createdUser { id email } } }`
+                            query: `mutation { userManagementCreateUser(createUserOptions: { authenticationDomainId: "${authDomainId.replace(/"/g, '\\"')}", email: "${email.replace(/"/g, '\\"')}", name: "${name.replace(/"/g, '\\"')}", userType: ${userType} }) { createdUser { id email name } } }`
                         };
                     }
                 }
