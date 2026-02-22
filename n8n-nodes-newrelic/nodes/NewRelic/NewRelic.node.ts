@@ -345,11 +345,11 @@ export class NewRelic implements INodeType {
                         const entityGuid = this.getNodeParameter('entityGuid', i) as string;
                         if (operation === 'tags') {
                             graphqlQuery = {
-                                query: `{ actor { entity(guid: "${entityGuid}") { name tags { key values } } } }`
+                                query: `{ actor { entity(guid: "${entityGuid.replace(/"/g, '\\"')}") { name tags { key values } } } }`
                             };
                         } else if (operation === 'relationships') {
                             graphqlQuery = {
-                                query: `{ actor { entity(guid: "${entityGuid}") { name relatedEntities { results { source { entity { name type guid } } target { entity { name type guid } } } } } } }`
+                                query: `{ actor { entity(guid: "${entityGuid.replace(/"/g, '\\"')}") { name relatedEntities { results { source { entity { name type guid } } target { entity { name type guid } } } } } } }`
                             };
                         }
                     }
@@ -363,7 +363,7 @@ export class NewRelic implements INodeType {
                         const email = this.getNodeParameter('email', i) as string;
                         const userType = this.getNodeParameter('userType', i) as string;
                         graphqlQuery = {
-                            query: `mutation { userManagementCreateUser(manageUserOptions: { authenticationDomainId: "${authDomainId}", email: "${email}", userType: ${userType} }) { createdUser { id email } } }`
+                            query: `mutation { userManagementCreateUser(manageUserOptions: { authenticationDomainId: "${authDomainId.replace(/"/g, '\\"')}", email: "${email.replace(/"/g, '\\"')}", userType: ${userType} }) { createdUser { id email } } }`
                         };
                     }
                 }
