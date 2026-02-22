@@ -358,7 +358,7 @@ export class NewRelic implements INodeType {
                 } else if (resource === 'userManagement') {
                     if (operation === 'getAuthDomains') {
                         graphqlQuery = {
-                            query: `{ actor { organization { userManagement { authenticationDomains { authenticationDomains { id name source } } } } } }`
+                            query: `{ actor { organization { userManagement { authenticationDomains { authenticationDomains { id name } } } } } }`
                         };
                     } else if (operation === 'createUser') {
                         const authDomainId = this.getNodeParameter('authDomainId', i) as string;
