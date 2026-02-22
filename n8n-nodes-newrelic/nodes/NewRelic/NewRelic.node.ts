@@ -241,6 +241,9 @@ export class NewRelic implements INodeType {
                     show: {
                         resource: ['nrql', 'account'],
                     },
+                    hide: {
+                        operation: ['structure']
+                    }
                 },
                 description: 'The New Relic Account ID to query against',
             },
@@ -323,9 +326,8 @@ export class NewRelic implements INodeType {
                         `,
                     };
                 } else if (resource === 'account') {
-                    const accountId = this.getNodeParameter('accountId', i) as string;
-
                     if (operation === 'consumption') {
+                        const accountId = this.getNodeParameter('accountId', i) as string;
                         const nrql = "SELECT sum(GigabytesIngested) FROM NrConsumption FACET usageMetric SINCE 1 month ago LIMIT MAX";
                         graphqlQuery = {
                             query: `{ actor { account(id: ${accountId}) { nrql(query: "${nrql}") { results } } } }`
