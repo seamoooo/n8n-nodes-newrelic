@@ -51,6 +51,8 @@ If you want to install this node locally for development:
 ### Trigger
 *   **New Relic Trigger**: Receive real-time alerts from New Relic via Webhook. Supports security verification using a Secret Token.
 
+![Sample Workflow](images/sample_workflow.png)
+
 ## Credentials
 
 To use this node, you need to set up credentials:
