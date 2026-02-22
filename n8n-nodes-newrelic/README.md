@@ -1,6 +1,6 @@
 # n8n-nodes-newrelic
 
-![n8n nodes newrelic](images/icons.png)
+![n8n nodes newrelic](https://raw.githubusercontent.com/seamoooo/n8n-nodes-newrelic/master/images/icons.png)
 This is an n8n community node. It lets you use New Relic in your n8n workflows.
 
 n8n is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
@@ -51,7 +51,7 @@ If you want to install this node locally for development:
 ### Trigger
 *   **New Relic Trigger**: Receive real-time alerts from New Relic via Webhook. Supports security verification using a Secret Token.
 
-![Sample Workflow](images/sample_workflow.png)
+![Sample Workflow](https://raw.githubusercontent.com/seamoooo/n8n-nodes-newrelic/master/images/sample_workflow.png)
 
 ## Credentials
 
