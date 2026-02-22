@@ -36,12 +36,12 @@ export class NewRelicTrigger implements INodeType {
             },
         ],
         properties: [],
-		usableAsTool: true,
+        usableAsTool: true,
     };
 
     async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
         const req = this.getRequestObject();
-        const credentials = await this.getCredentials('newRelicSecret');
+        const credentials = await this.getCredentials('newRelicSecretApi');
         const secretToken = credentials.secretToken as string;
 
         // Signature Verification
