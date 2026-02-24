@@ -1,5 +1,5 @@
 {
-	"name": "@seamoooo/n8n-nodes-newrelic",
+	"name": "n8n-nodes-newrelic",
 	"version": "0.1.0",
 	"description": "n8n node for New Relic integration, including NerdGraph NRQL execution",
 	"license": "MIT",
