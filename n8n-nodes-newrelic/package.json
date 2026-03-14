@@ -13,7 +13,8 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/seamoooo/n8n-nodes-newrelic.git"
+		"url": "https://github.com/seamoooo/n8n-nodes-newrelic.git",
+		"directory": "n8n-nodes-newrelic"
 	},
 	"scripts": {
 		"build": "n8n-node build",
