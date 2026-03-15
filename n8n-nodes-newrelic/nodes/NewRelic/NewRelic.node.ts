@@ -397,6 +397,10 @@ export class NewRelic implements INodeType {
                         },
                     });
 
+                    if (response?.errors && response.errors.length > 0) {
+                        throw new Error(`GraphQL Error: ${response.errors[0].message || JSON.stringify(response.errors)}`);
+                    }
+
                     // Parse responses to output lists of objects when possible
                     if (resource === 'nrql' && operation === 'query') {
                         const nrqlResults = response?.data?.actor?.account?.nrql?.results;
