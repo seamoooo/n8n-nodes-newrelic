@@ -54,6 +54,10 @@ export class NewRelic implements INodeType {
                         name: 'User Management',
                         value: 'userManagement',
                     },
+                    {
+                        name: 'Workflow Automation',
+                        value: 'workflowAutomation',
+                    },
                 ],
                 default: 'nrql',
             },
@@ -160,6 +164,66 @@ export class NewRelic implements INodeType {
                     },
                 ],
                 default: 'getAuthDomains',
+            },
+            {
+                displayName: 'Operation',
+                name: 'operation',
+                type: 'options',
+                noDataExpression: true,
+                displayOptions: {
+                    show: {
+                        resource: ['workflowAutomation'],
+                    },
+                },
+                options: [
+                    {
+                        name: 'Delete Workflow Definition',
+                        value: 'deleteWorkflowDefinition',
+                        description: 'Delete a specific workflow by its ID',
+                        action: 'Delete a workflow definition',
+                    },
+                    {
+                        name: 'Get Workflow Definitions',
+                        value: 'getWorkflowDefinitions',
+                        description: 'Retrieve a list of existing workflow definitions',
+                        action: 'Get workflow definitions',
+                    },
+                    {
+                        name: 'Start Workflow Run',
+                        value: 'startWorkflowRun',
+                        description: 'Trigger a workflow run on-demand',
+                        action: 'Start a workflow run',
+                    },
+                ],
+                default: 'getWorkflowDefinitions',
+            },
+            {
+                displayName: 'Workflow ID',
+                name: 'workflowId',
+                type: 'string',
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['workflowAutomation'],
+                        operation: ['deleteWorkflowDefinition'],
+                    },
+                },
+                description: 'The ID of the workflow definition to delete',
+            },
+            {
+                displayName: 'Workflow Name',
+                name: 'workflowName',
+                type: 'string',
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['workflowAutomation'],
+                        operation: ['startWorkflowRun'],
+                    },
+                },
+                description: 'The name of the workflow to start a run for',
             },
             {
                 displayName: 'Authentication Domain ID',
@@ -384,6 +448,23 @@ export class NewRelic implements INodeType {
                             query: `mutation { userManagementCreateUser(createUserOptions: { authenticationDomainId: "${authDomainId.replace(/"/g, '\\"')}", email: "${email.replace(/"/g, '\\"')}", name: "${name.replace(/"/g, '\\"')}", userType: ${userType} }) { createdUser { id email name } } }`
                         };
                     }
+                } else if (resource === 'workflowAutomation') {
+                    const accountId = this.getNodeParameter('accountId', i) as string;
+                    if (operation === 'getWorkflowDefinitions') {
+                        graphqlQuery = {
+                            query: `{ actor { account(id: ${accountId}) { aiWorkflows { workflows { id name destinationConfigurations { channelId } issuesFilter { name } } } } } }`
+                        };
+                    } else if (operation === 'deleteWorkflowDefinition') {
+                        const workflowId = this.getNodeParameter('workflowId', i) as string;
+                        graphqlQuery = {
+                            query: `mutation { aiWorkflowsDeleteWorkflow(accountId: ${accountId}, deleteWorkflowOptions: { workflowId: "${workflowId.replace(/"/g, '\\"')}" }) { id } }`
+                        };
+                    } else if (operation === 'startWorkflowRun') {
+                        const workflowName = this.getNodeParameter('workflowName', i) as string;
+                        graphqlQuery = {
+                            query: `mutation { workflowAutomationStartWorkflowRun(accountId: ${accountId}, workflowName: "${workflowName.replace(/"/g, '\\"')}") { workflowRunId } }`
+                        };
+                    }
                 }
 
                 if (Object.keys(graphqlQuery).length > 0) {
@@ -443,6 +524,19 @@ export class NewRelic implements INodeType {
                             }
                         } else if (operation === 'createUser') {
                             returnData.push({ json: response?.data?.userManagementCreateUser?.createdUser || response });
+                        }
+                    } else if (resource === 'workflowAutomation') {
+                        if (operation === 'getWorkflowDefinitions') {
+                            const workflows = response?.data?.actor?.account?.aiWorkflows?.workflows;
+                            if (Array.isArray(workflows)) {
+                                workflows.forEach((wf: IDataObject) => returnData.push({ json: wf }));
+                            } else {
+                                returnData.push({ json: response });
+                            }
+                        } else if (operation === 'deleteWorkflowDefinition') {
+                            returnData.push({ json: response?.data?.aiWorkflowsDeleteWorkflow || response });
+                        } else if (operation === 'startWorkflowRun') {
+                            returnData.push({ json: response?.data?.workflowAutomationStartWorkflowRun || response });
                         }
                     }
                 }
