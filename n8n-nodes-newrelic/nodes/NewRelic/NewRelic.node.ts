@@ -4,6 +4,8 @@ import {
     INodeExecutionData,
     INodeType,
     INodeTypeDescription,
+    JsonObject,
+    NodeApiError,
     NodeOperationError,
 } from 'n8n-workflow';
 
@@ -398,7 +400,9 @@ export class NewRelic implements INodeType {
                     });
 
                     if (response?.errors && response.errors.length > 0) {
-                        throw new Error(`GraphQL Error: ${response.errors[0].message || JSON.stringify(response.errors)}`);
+                        throw new NodeApiError(this.getNode(), response as JsonObject, {
+                            message: `GraphQL Error: ${response.errors[0].message || JSON.stringify(response.errors)}`,
+                        });
                     }
 
                     // Parse responses to output lists of objects when possible
