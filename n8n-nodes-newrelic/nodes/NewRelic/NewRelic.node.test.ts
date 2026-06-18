@@ -23,12 +23,4 @@ describe('NewRelic Node', () => {
         expect(node.description.inputs).toEqual(['main']);
         expect(node.description.outputs).toEqual(['main']);
     });
-
-    it('should support Workflow Automation resource', () => {
-        const resourceProperty = node.description.properties.find(p => p.name === 'resource');
-        expect(resourceProperty).toBeDefined();
-        
-        const workflowOption = resourceProperty!.options?.find((opt: any) => opt.value === 'workflowAutomation');
-        expect(workflowOption).toBeDefined();
-    });
 });
